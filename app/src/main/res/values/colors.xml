@@ -27,9 +27,9 @@
     <color name="transparent">#00ffffff</color>
 
 
-    <color name="red_airing">#ffc10e0e</color>
-    <color name="green_airing">#ff85b100</color>
-    <color name="blue_airing">#ff326eaa</color>
+    <color name="finished_airing">#ffc10e0e</color>
+    <color name="currently_airing">#ff85b100</color>
+    <color name="notyet_airing">#ff326eaa</color>
 
 
 </resources>

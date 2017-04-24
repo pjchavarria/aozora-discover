@@ -14,22 +14,23 @@
             android:id="@+id/ivAnime"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="220dp" />
+            android:layout_height="150dp"
+            />
 
         <LinearLayout
             android:layout_below="@+id/ivAnime"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
             >
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:ellipsize="end"
                 android:lines="1"
                 android:textColor="@color/gray3C"
@@ -46,7 +47,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                >
                 <TextView
                     android:id="@+id/tvRating"
                     android:layout_width="wrap_content"
@@ -71,7 +74,9 @@
                     android:id="@+id/tvAnimeDesc"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.0"/>
+                    android:layout_weight="1.0"
+                    android:textSize="12sp"
+                    />
 
             </ScrollView>
 
@@ -84,15 +89,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:background="@color/blue_airing"
+            android:background="@color/finished_airing"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:textColor="#FFFFFF"
+            android:ellipsize="end"
             />
-
-
-
-
 
     </RelativeLayout>
 

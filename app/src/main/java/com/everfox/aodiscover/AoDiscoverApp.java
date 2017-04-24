@@ -1,6 +1,7 @@
 package com.everfox.aodiscover;
 
 import android.app.Application;
+import android.graphics.Typeface;
 
 import com.parse.Parse;
 import com.parse.ParseObject;
@@ -10,6 +11,17 @@ import com.parse.ParseObject;
  */
 
 public class AoDiscoverApp extends Application {
+
+
+    static Typeface awesomeTypeface;
+
+    public static Typeface getAwesomeTypeface() {
+        return awesomeTypeface;
+    }
+
+    public static void setAwesomeTypeface(Typeface awesomeTypeface) {
+        AoDiscoverApp.awesomeTypeface = awesomeTypeface;
+    }
 
     @Override
     public void onCreate() {
@@ -23,5 +35,6 @@ public class AoDiscoverApp extends Application {
                 .server("http://www.aozoraapp.com/parse/")
                 .enableLocalDataStore()
                 .build());
+        setAwesomeTypeface(Typeface.createFromAsset(getApplicationContext().getAssets(),"FontAwesome.ttf"));
     }
 }

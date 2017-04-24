@@ -14,7 +14,7 @@ import android.widget.ImageView;
  * Created by daniel.soto on 4/24/2017.
  */
 
-public class BlurUtils {
+public class Utils {
 
     private static final float BITMAP_SCALE = 0.4f;
     private static final float BLUR_RADIUS = 10f;

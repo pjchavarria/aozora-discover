@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AoDiscover</string>
+    <string name="fa_rating">&#xf1fe;</string>
+    <string name="fa_users">&#xf007;</string>
 </resources>
