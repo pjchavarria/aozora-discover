@@ -3,4 +3,33 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="grayE4">#E4E4E4</color>
+    <color name="grayE5">#E5E5E5</color>
+    <color name="grayF6">#F6F6F6</color>
+    <color name="gray3C">#3C3C3C</color>
+    <!-- Paul Colors -->
+    <color name="list_item_title">#fff</color>
+    <color name="list_background">#ff303030</color>
+    <color name="list_background_pressed">#ff326eaa</color>
+    <color name="list_background_pressed_darker">#ff2c588d</color>
+    <color name="blue_dark">#ff22345d</color>
+    <color name="list_divider">#272727</color>
+    <color name="counter_text_bg">#626262</color>
+    <color name="counter_text_color">#c5c4c4</color>
+    <color name="background_1">#ff1d2022</color>
+    <color name="background_2">#ff2e3236</color>
+    <color name="background_3">#ff3d4247</color>
+    <color name="text_blue">#ffa6f5f5</color>
+    <color name="black_50">#7f000000</color>
+    <color name="black_70">#9f000000</color>
+    <color name="red">#ffff070f</color>
+    <color name="transparent">#00ffffff</color>
+
+
+    <color name="red_airing">#ffc10e0e</color>
+    <color name="green_airing">#ff85b100</color>
+    <color name="blue_airing">#ff326eaa</color>
+
+
 </resources>
