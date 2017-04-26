@@ -25,7 +25,8 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:titleTextColor="#FFFFFF"
         android:background="@null"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="15dp"
+        android:contentInsetStart="0dp"/>
 
 
     <android.support.v4.view.ViewPager
@@ -76,84 +77,96 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Some things you can ask me:"
-                android:textSize="25sp"
+                android:textSize="22sp"
                 android:gravity="center_horizontal"
                 android:fontFamily="sans-serif-light"
-                />
+                android:layout_marginEnd="50dp"
+                android:layout_marginStart="50dp"/>
 
             <TextView
                 android:textColor="#FFFFFF"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Most popular anime currently airing"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:gravity="center_horizontal"
                 android:fontFamily="sans-serif-light"
                 android:layout_marginTop="25dp"
-                />
+                android:id="@+id/tv_suggestion_one"/>
             <TextView
                 android:textColor="#FFFFFF"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Comedy and drama without action"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:gravity="center_horizontal"
                 android:fontFamily="sans-serif-light"
                 android:layout_marginTop="25dp"
-                />
+                android:id="@+id/tv_suggestion_two"/>
             <TextView
                 android:textColor="#FFFFFF"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Anime like One Piece"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:gravity="center_horizontal"
                 android:fontFamily="sans-serif-light"
                 android:layout_marginTop="25dp"
-                />
+                android:id="@+id/tv_suggestion_three"/>
             <TextView
                 android:textColor="#FFFFFF"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Anime with more than 100 episodes"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:gravity="center_horizontal"
                 android:fontFamily="sans-serif-light"
                 android:layout_marginTop="25dp"
-                />
+                android:id="@+id/tv_suggestion_four"/>
             <TextView
                 android:textColor="#FFFFFF"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Movies rated r17+"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:gravity="center_horizontal"
                 android:fontFamily="sans-serif-light"
                 android:layout_marginTop="25dp"
-                />
+                android:id="@+id/tv_suggestion_five"/>
 
             <TextView
                 android:textColor="#FFFFFF"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Highest rated OVA between 2014 and 2015"
-                android:textSize="20sp"
+                android:text="Highest rated OVA"
+                android:textSize="18sp"
                 android:gravity="center_horizontal"
                 android:fontFamily="sans-serif-light"
                 android:layout_marginTop="25dp"
-                />
+                android:id="@+id/tv_suggestion_six"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#FFF"
+                android:text="Best anime between 2014 and 2015"
+                android:textSize="18sp"
+                android:gravity="center_horizontal"
+                android:fontFamily="sans-serif-light"
+                android:layout_marginTop="25dp"
+                android:id="@+id/tv_suggestion_seven"/>
 
             <TextView
                 android:textColor="#FFFFFF"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="You can also combine characteristics to find your perfect anime"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:gravity="center_horizontal"
                 android:fontFamily="sans-serif-light"
                 android:layout_marginTop="25dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
                 />
         </LinearLayout>
     </ScrollView>

@@ -1,9 +1,13 @@
 package com.everfox.aodiscover;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -13,7 +17,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +29,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +41,8 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements SearchHelper.OnGetSearchResultsListener {
 
     public static int MAX_ELEVATION_FACTOR = 8;
+    String AOTRACKING_PACKAGE ="com.everfox.animetrackerandroid";
+    String AOFORUMS_PACKAGE ="com.everfox.aozoraforums";
     MenuItem searchMenuItem;
     SearchView searchView;
     SearchHelper searchHelper;
@@ -60,6 +68,20 @@ public class MainActivity extends AppCompatActivity implements SearchHelper.OnGe
     ProgressBar pbLoading;
     @BindView(R.id.svSuggestions)
     ScrollView svSuggestions;
+    @BindView(R.id.tv_suggestion_one)
+    TextView tvSuggestionOne;
+    @BindView(R.id.tv_suggestion_two)
+    TextView tvSuggestionTwo;
+    @BindView(R.id.tv_suggestion_three)
+    TextView tvSuggestionThree;
+    @BindView(R.id.tv_suggestion_four)
+    TextView tvSuggestionFour;
+    @BindView(R.id.tv_suggestion_five)
+    TextView tvSuggestionFive;
+    @BindView(R.id.tv_suggestion_six)
+    TextView tvSuggestionSix;
+    @BindView(R.id.tv_suggestion_seven)
+    TextView tvSuggestionSeven;
 
     View decorView;
 
@@ -67,11 +89,16 @@ public class MainActivity extends AppCompatActivity implements SearchHelper.OnGe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         ButterKnife.bind(this);
         Bitmap bitmap = Utils.blur(this, BitmapFactory.decodeResource(getResources(),R.drawable.anime_scenery));
         ivBackground.setImageBitmap(bitmap);
         tool_bar.setTitle("Enter your request here");
         setSupportActionBar(tool_bar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
         cardFragmentPagerAdapter = new CardFragmentPagerAdapter(getSupportFragmentManager(),dpToPixels(2, this));
         mFragmentCardShadowTransformer = new ShadowTransformer(vpResults, cardFragmentPagerAdapter);
         searchHelper = new SearchHelper(this);
@@ -80,6 +107,38 @@ public class MainActivity extends AppCompatActivity implements SearchHelper.OnGe
         vpResults.setOffscreenPageLimit(3);
         mFragmentCardShadowTransformer.enableScaling(true);
         ivShare.setColorFilter(Color.WHITE);
+        ivAozoraForums.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                appClicked(AOFORUMS_PACKAGE);
+            }
+        });
+        ivAozoraTracker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                appClicked(AOTRACKING_PACKAGE);
+            }
+        });
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Listener", "StartEvent");
+                TextView tvSelected = (TextView)v;
+                Log.d("Listener", "ParseTV");
+                //searchMenuItem.collapseActionView();
+                onOptionsItemSelected(searchMenuItem);
+                Log.d("Listener", "PerformClick");
+                searchEditText.setText(tvSelected.getText().toString());
+                Log.d("Listener", "SetText");
+            }
+        };
+        tvSuggestionOne.setOnClickListener(listener);
+        tvSuggestionTwo.setOnClickListener(listener);
+        tvSuggestionThree.setOnClickListener(listener);
+        tvSuggestionFour.setOnClickListener(listener);
+        tvSuggestionFive.setOnClickListener(listener);
+        tvSuggestionSix.setOnClickListener(listener);
+        tvSuggestionSeven.setOnClickListener(listener);
     }
 
     @Override
@@ -119,7 +178,6 @@ public class MainActivity extends AppCompatActivity implements SearchHelper.OnGe
             public boolean onQueryTextChange(String newText) {
                 if(newText.equals("")) {
                     noResults();
-
                 }
                 return true;
             }
@@ -133,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements SearchHelper.OnGe
             noResults();
         } else {
             if (newText.length() > 2) {
+                cardFragmentPagerAdapter.clear();
                 searchHelper.searchAnime(newText);
                 pbLoading.setVisibility(View.VISIBLE);
                 vpResults.setVisibility(View.GONE);
@@ -162,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements SearchHelper.OnGe
             for (int i = 0; i < results.size(); i++) {
                 cardFragmentPagerAdapter.addCardFragment(AnimeFragment.newInstance(results.get(i)));
                 cardFragmentPagerAdapter.notifyDataSetChanged();
+                vpResults.setCurrentItem(0);
             }
         }
 
@@ -206,6 +266,10 @@ public class MainActivity extends AppCompatActivity implements SearchHelper.OnGe
 
         public void addCardFragment(AnimeFragment fragment) {
             mFragments.add(fragment);
+        }
+
+        public void clear() {
+            mFragments.clear();
         }
 
     }
@@ -317,4 +381,43 @@ public class MainActivity extends AppCompatActivity implements SearchHelper.OnGe
     public static float dpToPixels(int dp, Context context) {
         return dp * (context.getResources().getDisplayMetrics().density);
     }
+
+    private void appClicked(String packageName) {
+
+        if(appInstalledOrNot(packageName)) {
+            runApp(packageName);
+        } else {
+            goToMarket(packageName);
+        }
+    }
+
+    private boolean appInstalledOrNot(String packageName) {
+        PackageManager pm = getPackageManager();
+        try {
+            pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+
+        return false;
+    }
+
+    private void goToMarket(String packageName) {
+
+        Uri uri = Uri.parse("market://details?id=" + packageName);
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        try {
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(MainActivity.this,"Please try again later", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void runApp(String packageName) {
+
+        Intent LaunchIntent = getPackageManager()
+                .getLaunchIntentForPackage(packageName);
+        startActivity(LaunchIntent);
+    }
+
 }
