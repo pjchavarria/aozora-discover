@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,9 +18,13 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -95,10 +100,8 @@ public class MainActivity extends AppCompatActivity implements SearchHelper.OnGe
         ButterKnife.bind(this);
         Bitmap bitmap = Utils.blur(this, BitmapFactory.decodeResource(getResources(),R.drawable.anime_scenery));
         ivBackground.setImageBitmap(bitmap);
-        tool_bar.setTitle("Enter your request here");
+        //tool_bar.setTitle("Enter your request here");
         setSupportActionBar(tool_bar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
         cardFragmentPagerAdapter = new CardFragmentPagerAdapter(getSupportFragmentManager(),dpToPixels(2, this));
         mFragmentCardShadowTransformer = new ShadowTransformer(vpResults, cardFragmentPagerAdapter);
         searchHelper = new SearchHelper(this);
@@ -119,19 +122,76 @@ public class MainActivity extends AppCompatActivity implements SearchHelper.OnGe
                 appClicked(AOTRACKING_PACKAGE);
             }
         });
+        searchEditText = (EditText) findViewById(R.id.etSearch);
+        searchEditText.setTextColor(Color.WHITE);
+        searchEditText.setTextSize(18);
+        searchEditText.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        searchEditText.setHint("Enter your request here");
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.d("TextChange", "Lenght" + s.length());
+                if (s.length() > 0) {
+                    Log.d("TextChange", s.toString());
+                    Drawable drawable = getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel);
+                    searchEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
+                } else {
+                    searchEditText.setCompoundDrawables(null, null, null, null);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        searchEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (searchEditText.getText().equals("")) { return false; }
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+                if (searchEditText.getCompoundDrawables()[DRAWABLE_RIGHT] == null) { return false; }
+
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= (searchEditText.getRight() - searchEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        // your action here
+                        searchEditText.setText("");
+                        noResults();
+                        return false;
+                    }
+                }
+                return false;
+            }
+        });
+        searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                performSearch(v.getText().toString());
+                View view = MainActivity.this.getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+                return true;
+            }
+        });
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Listener", "StartEvent");
                 TextView tvSelected = (TextView)v;
-                Log.d("Listener", "ParseTV");
-                //searchMenuItem.collapseActionView();
-                onOptionsItemSelected(searchMenuItem);
-                Log.d("Listener", "PerformClick");
                 searchEditText.setText(tvSelected.getText().toString());
-                Log.d("Listener", "SetText");
+                performSearch(tvSelected.getText().toString());
             }
         };
+
         tvSuggestionOne.setOnClickListener(listener);
         tvSuggestionTwo.setOnClickListener(listener);
         tvSuggestionThree.setOnClickListener(listener);
@@ -154,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements SearchHelper.OnGe
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.menu_search, menu);
+        /*getMenuInflater().inflate(R.menu.menu_search, menu);
         searchMenuItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) searchMenuItem.getActionView();
         searchEditText = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
@@ -182,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements SearchHelper.OnGe
                 return true;
             }
         });
-
+*/
         return super.onCreateOptionsMenu(menu);
     }
     private void performSearch(String newText) {
