@@ -3,8 +3,10 @@ package com.everfox.aodiscover;
 import android.app.Application;
 import android.graphics.Typeface;
 
+import com.crashlytics.android.Crashlytics;
 import com.parse.Parse;
 import com.parse.ParseObject;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by daniel.soto on 4/24/2017.
@@ -26,6 +28,7 @@ public class AoDiscoverApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         ParseObject.registerSubclass(Anime.class);
 

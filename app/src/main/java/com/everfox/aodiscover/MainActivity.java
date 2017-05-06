@@ -122,6 +122,16 @@ public class MainActivity extends AppCompatActivity implements SearchHelper.OnGe
                 appClicked(AOTRACKING_PACKAGE);
             }
         });
+        ivShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.everfox.aodiscover");
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+            }
+        });
         searchEditText = (EditText) findViewById(R.id.etSearch);
         searchEditText.setTextColor(Color.WHITE);
         searchEditText.setTextSize(18);
@@ -135,9 +145,7 @@ public class MainActivity extends AppCompatActivity implements SearchHelper.OnGe
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.d("TextChange", "Lenght" + s.length());
                 if (s.length() > 0) {
-                    Log.d("TextChange", s.toString());
                     Drawable drawable = getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel);
                     searchEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
                 } else {
@@ -246,12 +254,12 @@ public class MainActivity extends AppCompatActivity implements SearchHelper.OnGe
         return super.onCreateOptionsMenu(menu);
     }
     private void performSearch(String newText) {
-
+        cardFragmentPagerAdapter.clear();
+        cardFragmentPagerAdapter.notifyDataSetChanged();
         if(newText == ""){
             noResults();
         } else {
             if (newText.length() > 2) {
-                cardFragmentPagerAdapter.clear();
                 searchHelper.searchAnime(newText);
                 pbLoading.setVisibility(View.VISIBLE);
                 vpResults.setVisibility(View.GONE);
@@ -280,9 +288,9 @@ public class MainActivity extends AppCompatActivity implements SearchHelper.OnGe
             svSuggestions.setVisibility(View.GONE);
             for (int i = 0; i < results.size(); i++) {
                 cardFragmentPagerAdapter.addCardFragment(AnimeFragment.newInstance(results.get(i)));
-                cardFragmentPagerAdapter.notifyDataSetChanged();
-                vpResults.setCurrentItem(0);
             }
+            cardFragmentPagerAdapter.notifyDataSetChanged();
+            vpResults.setCurrentItem(0);
         }
 
     }
@@ -324,12 +332,18 @@ public class MainActivity extends AppCompatActivity implements SearchHelper.OnGe
             return fragment;
         }
 
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+
         public void addCardFragment(AnimeFragment fragment) {
             mFragments.add(fragment);
         }
 
         public void clear() {
             mFragments.clear();
+            this.notifyDataSetChanged();
         }
 
     }
